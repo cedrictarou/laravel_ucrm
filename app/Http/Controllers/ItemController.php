@@ -57,7 +57,9 @@ class ItemController extends Controller
      */
     public function show(Item $item)
     {
-        //
+        return Inertia::render('Items/Show', [
+            'item' => $item
+        ]);
     }
 
     /**
@@ -68,7 +70,9 @@ class ItemController extends Controller
      */
     public function edit(Item $item)
     {
-        //
+        return Inertia::render('Items/Edit', [
+            'item' => $item
+        ]);
     }
 
     /**
@@ -80,7 +84,14 @@ class ItemController extends Controller
      */
     public function update(UpdateItemRequest $request, Item $item)
     {
-        //
+        $item->update([
+            'name' => $request->name,
+            'memo' => $request->memo,
+            'price' => $request->price,
+            'is_selling' => $request->is_selling,
+        ]);
+
+        return to_route('items.index')->with(['message' => '更新しました', 'status' => 'success']);
     }
 
     /**
@@ -91,6 +102,10 @@ class ItemController extends Controller
      */
     public function destroy(Item $item)
     {
-        //
+        if ($item->delete()) {
+            return to_route('items.index')->with(['message' => '削除しました', 'status' => 'success']);
+        } else {
+            return to_route('items.index')->with(['message' => '削除できませんでした', 'status' => 'error']);
+        }
     }
 }
