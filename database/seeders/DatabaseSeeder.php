@@ -8,21 +8,21 @@ use \App\Models\Purchase;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     *
-     * @return void
-     */
-    public function run()
-    {
-        $this->call(UserSeeder::class);
-        $this->call(ItemSeeder::class);
+	/**
+	 * Seed the application's database.
+	 *
+	 * @return void
+	 */
+	public function run()
+	{
+		$this->call(UserSeeder::class);
+		$this->call(ItemSeeder::class);
 
-        \App\Models\Customer::factory(1000)->create();
+		\App\Models\Customer::factory(1000)->create();
 
-        $items = \App\Models\Item::all();
-        Purchase::factory(100)->create()->each(function (Purchase $purchase) use ($items) {
-            $purchase->items()->attach($items->random(rand(1, 3))->pluck('id')->toArray(), ['quantity' => rand(1, 5)]);
-        });
-    }
+		$items = \App\Models\Item::all();
+		Purchase::factory(30000)->create()->each(function (Purchase $purchase) use ($items) {
+			$purchase->items()->attach($items->random(rand(1, 3))->pluck('id')->toArray(), ['quantity' => rand(1, 5)]);
+		});
+	}
 }
